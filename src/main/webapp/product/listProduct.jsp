@@ -61,7 +61,7 @@ function fncGetProductList(){
 			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" />
 		</td>
 	
-		
+		 
 		<td align="right" width="70">
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
