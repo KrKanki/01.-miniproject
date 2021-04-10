@@ -26,13 +26,13 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductVO getProduct(int prodNo) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return productDAO.findProduct(prodNo);
 	}
 
 	@Override
 	public HashMap<String, Object> getProductList(SearchVO searchVO) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return productDAO.getProductList(searchVO);
 	}
 
 	@Override

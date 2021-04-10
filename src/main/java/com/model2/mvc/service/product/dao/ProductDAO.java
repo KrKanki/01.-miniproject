@@ -1,5 +1,5 @@
 package com.model2.mvc.service.product.dao;
-//		com.model2.mvc.service.product.dao.ProductDAO
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,28 +37,31 @@ public class ProductDAO {
 	
 	public HashMap<String,Object> getProductList(SearchVO searchVO) throws Exception {
 		
-		System.out.println("productDAO getProductList 실행");
 		Connection con = DBUtil.getConnection();
+		System.out.println("productDAO getProductList 실행");		
 		String sql = "SELECT * FROM PRODUCT" ;
  
 		if(searchVO.getSearchCondition() != null) {
 			if (searchVO.getSearchCondition().equals("0")) {
-				sql += " where prod_no='" + searchVO.getSearchKeyword()
-						+ "'";
+				sql += " where prod_no IN (" + searchVO.getSearchKeyword()
+						+ ")";
 			} else if (searchVO.getSearchCondition().equals("1")) {
-				sql += " where prod_name='" + searchVO.getSearchKeyword()
-						+ "'";
+				sql += " where prod_name IN ('" + searchVO.getSearchKeyword()
+						+ "')";
+			} else {
+				sql += " where price IN (" + searchVO.getSearchKeyword()
+						+ ")";
 			}
 		}
-		
-		sql += "ORDER BY prod_no";
-		
+		sql += " ORDER BY prod_no ";
+		System.out.println("1-1번디버깅");
 		PreparedStatement stmt = 
 				con.prepareStatement(	sql,
 															ResultSet.TYPE_SCROLL_INSENSITIVE,
 															ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = stmt.executeQuery();
-			
+		System.out.println("1-2번디버깅");
+		ResultSet rs = stmt.executeQuery();
+		System.out.println("1-3번디버깅");
 		rs.last();
 		int total = rs.getRow();
 		System.out.println("로우의 수:" + total);
@@ -69,8 +72,8 @@ public class ProductDAO {
 		rs.absolute(searchVO.getPage() * searchVO.getPageUnit() - searchVO.getPageUnit()+1);
 		System.out.println("searchVO.getPage():" + searchVO.getPage());
 		System.out.println("searchVO.getPageUnit():" + searchVO.getPageUnit());	 
-
-		ArrayList <ProductVO> list = new ArrayList<ProductVO>();
+		System.out.println("2번디버깅");
+		ArrayList<ProductVO> list = new ArrayList<ProductVO>();
 		if (total > 0) {
 			for (int i = 0; i < searchVO.getPageUnit(); i++) {
 				ProductVO vo = new ProductVO();
@@ -78,8 +81,9 @@ public class ProductDAO {
 				vo.setProdName(rs.getString("prod_name"));
 				vo.setPrice(rs.getInt("price"));
 				vo.setRegDate(rs.getDate("reg_date"));
+				//vo.setProTranCode(rs.getString("proTranCode"));
 				
-				
+				System.out.println("3번 if문안디버깅");
 
 				list.add(vo);
 				if (!rs.next())
@@ -92,24 +96,37 @@ public class ProductDAO {
 
 		con.close();
 			
-		return map;
 		
+		
+		return map;
 	}
 
 	
-public void findProduct(ProductVO productVO) throws Exception {
+public ProductVO findProduct(int prodNo) throws Exception {
 	
 	Connection con = DBUtil.getConnection();
 	
 	String sql =  "SELECT * FROM product WHERE prod_no IN (?)"; 
 	
 	PreparedStatement stmt = con.prepareStatement(sql);
-	stmt.setInt(1, productVO.getProdNo());
+	stmt.setInt(1, prodNo);
 	
+	ResultSet rs= stmt.executeQuery();
+	ProductVO productVO = null;
 	
-	stmt.executeQuery();
+	while(rs.next()) {
+		productVO= new ProductVO();
+		productVO.setProdNo(rs.getInt("prod_no"));
+		productVO.setProdName(rs.getString("prod_name"));
+		productVO.setPrice(rs.getInt("price"));
+		productVO.setRegDate(rs.getDate("reg_date"));
+		//productVO.setProTranCode(rs.getString("proTranCode"));
+		
+	}
 	
 	con.close();	
+	
+	return productVO;
 }
 /*
 public void updateProduct(ProductVO productVO) throws Exception {

@@ -1,8 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
     
-<%@ page import = java.util.Map %>
-<%@ page import  %>
+<%@page import = "java.util.ArrayList"%>  
+<%@page import = "java.util.HashMap" %>
+<%@page import = "com.model2.mvc.common.SearchVO" %>
+<%@page import = "com.model2.mvc.service.product.vo.ProductVO"%> 
+
+
+ <% 
+ HashMap<String, Object> map = (HashMap<String,Object>)request.getAttribute("map");
+ SearchVO searchVO = (SearchVO)request.getAttribute("searchVO");
+  
+ 
+ int total = 0;
+ ArrayList<ProductVO> list = null;
+ if(map != null){
+	 total = ((Integer)map.get("count")).intValue();
+	 list = (ArrayList<ProductVO>)map.get("list");
+	
+	 
+ 	}
+	 int currentPage = searchVO.getPage();
+	 
+	 int totalpage=0;
+	 if(total> 0){
+		 totalpage= total / searchVO.getPageUnit();
+		 if(total%searchVO.getPageUnit() >0)
+			 totalpage +=1;
+	 }
+	 
+	 
+ 
+ 
+ 
+ 
+ %>
+ 
+ 
+ 
+ 
+ 
  
 <!DOCTYPE html>
 <html>
@@ -12,11 +49,11 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-<!--
+
 function fncGetProductList(){
 	document.detailForm.submit();
 }
--->
+
 </script>
 </head>
 
@@ -51,16 +88,54 @@ function fncGetProductList(){
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
+	<%
+		if(searchVO.getSearchCondition() != null){
+	%>
+	
 		
 		<td align="right">
+			<select name="searchCondition" class="ct_input_g" style="width:80px">
+				
+				<%
+				if(searchVO.getSearchCondition().equals("0")){
+				%>
+				<option value ="0" selected>상품번호</option>
+				<option value ="1">상품명</option>
+				<option value ="2">상품가격</option>
+				<%
+				}else if(searchVO.getSearchCondition().equals("1")){
+					%>
+				<option value ="0" >상품번호</option>
+				<option value ="1" selected>상품명</option>
+				<option value ="2">상품가격</option>
+				<%
+				}else{
+					%>
+				<option value ="0" >상품번호</option>
+				<option value ="1" >상품명</option>
+				<option value ="2" selected>상품가격</option>				
+				<%
+				}
+				%>
+				
+			</select>
+			<input type="text" name="searchKeyword" value="<%= searchVO.getSearchKeyword() %>" 
+					class="ct_input_g" style="width:200px; height:19px" />
+		</td>
+	 <%
+	 }else{
+	 %>
+		 <td align="right">
 			<select name="searchCondition" class="ct_input_g" style="width:80px">
 				<option value="0">상품번호</option>
 				<option value="1">상품명</option>
 				<option value="2">상품가격</option>
 			</select>
-			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" />
+			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" >
 		</td>
-	
+	<%
+	 }
+	%>
 		 
 		<td align="right" width="70">
 			<table border="0" cellspacing="0" cellpadding="0">
@@ -81,9 +156,11 @@ function fncGetProductList(){
 </table>
 
 
+
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
-		<td colspan="11" >전체 42 건수, 현재 1 페이지</td>
+		<td colspan="11" >전체 <%=total %>  건수, 현재 <%=currentPage %> 페이지</td>
 	</tr>
 	<tr>
 		<td class="ct_list_b" width="100">No</td>
@@ -99,105 +176,45 @@ function fncGetProductList(){
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
-		
+		<%
+			int no = list.size();
+			for(int i= 0; i< list.size(); i++){
+				ProductVO vo = (ProductVO)list.get(i);
+		%>		
 	<tr class="ct_list_pop">
-		<td align="center">3</td>
+		<td align="center"><%=no-- %></td>
 		<td></td>
 				
-				<td align="left"><a href="/getProduct.do?prodNo=10000&menu=manage">vaio vgn FS70B</a></td>
+				<td align="left"><a href="/getProduct.do?prodNo=<%=vo.getProdNo() %>&menu=manage"><%=vo.getProdName() %></a></td>
 		
 		<td></td>
-		<td align="left">2000000</td>
+		<td align="left"><%=vo.getPrice() %></td>
 		<td></td>
-		<td align="left">2012-12-14</td>
+		<td align="left"><%=vo.getRegDate() %></td>
 		<td></td>
 		<td align="left">
 		
-			배송중
+			배송중<%=vo.getProTranCode() %>
 		
 		</td>	
 	</tr>
 	<tr>
 		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 	</tr>	
-	
-	<tr class="ct_list_pop">
-		<td align="center">2</td>
-		<td></td>
-				
-				<td align="left"><a href="/getProduct.do?prodNo=10001&menu=manage">자전거</a></td>
-		
-		<td></td>
-		<td align="left">10000</td>
-		<td></td>
-		<td align="left">2012-11-14</td>
-		<td></td>
-		<td align="left">
-		
-			배송완료
-		
-		</td>	
-	</tr>
-	<tr>
-		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
-	</tr>	
-	
-	<tr class="ct_list_pop">
-		<td align="center">1</td>
-		<td></td>
-				
-				<td align="left"><a href="/getProduct.do?prodNo=10002&menu=manage">보르도</a></td>
-		
-		<td></td>
-		<td align="left">1170000</td>
-		<td></td>
-		<td align="left">2012-10-14</td>
-		<td></td>
-		<td align="left">
-		
-			구매완료
-		
-					<a href="/updateTranCodeByProd.do?prodNo=10002&tranCode=2">배송하기</a>
-		
-		</td>	
-	</tr>
-	<tr>
-		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
-	</tr>	
-	
+	<% } %>
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
 		<td align="center">
-		
-			<a href="/listProduct.do?page=1&menu=manage">1</a>
-		
-			<a href="/listProduct.do?page=2&menu=manage">2</a>
-		
-			<a href="/listProduct.do?page=3&menu=manage">3</a>
-		
-			<a href="/listProduct.do?page=4&menu=manage">4</a>
-		
-			<a href="/listProduct.do?page=5&menu=manage">5</a>
-		
-			<a href="/listProduct.do?page=6&menu=manage">6</a>
-		
-			<a href="/listProduct.do?page=7&menu=manage">7</a>
-		
-			<a href="/listProduct.do?page=8&menu=manage">8</a>
-		
-			<a href="/listProduct.do?page=9&menu=manage">9</a>
-		
-			<a href="/listProduct.do?page=10&menu=manage">10</a>
-		
-			<a href="/listProduct.do?page=11&menu=manage">11</a>
-		
-			<a href="/listProduct.do?page=12&menu=manage">12</a>
-		
-			<a href="/listProduct.do?page=13&menu=manage">13</a>
-		
-			<a href="/listProduct.do?page=14&menu=manage">14</a>
+		<% 
+			for(int i = 1; i<= totalpage  ; i++){
+		%>		
+				<a href = "/listProduct.do?page=<%=i%>&menu=manage"><%=i%></a>
+		<%
+			}
+		%>
+		 	
 		
     	</td>
 	</tr>

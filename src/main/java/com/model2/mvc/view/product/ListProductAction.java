@@ -1,7 +1,7 @@
 package com.model2.mvc.view.product;
 
 
-import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +18,9 @@ public class ListProductAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, 
 							HttpServletResponse response) throws Exception {
-
-		System.out.println("listproductaction 실행");
+		HttpSession session = request.getSession();
+		
+		
 		System.out.println("listproductaction 실행");
 		SearchVO searchVO = new SearchVO();
 		System.out.println("테스트");
@@ -31,17 +32,20 @@ public class ListProductAction extends Action {
 		searchVO.setPage(page);
 		searchVO.setSearchCondition(request.getParameter("searchCondition"));
 		searchVO.setSearchKeyword(request.getParameter("searchKeyword"));
+		
 		System.out.println(searchVO.getSearchCondition());
 		System.out.println(searchVO.getSearchKeyword());
+		System.out.println("1");
 		String pageUnit = getServletContext().getInitParameter("pageSize");
 		searchVO.setPageUnit(Integer.parseInt(pageUnit));
-		
+		System.out.println("2");
 		ProductService service = new ProductServiceImpl();
-		Map<String, Object> map = service.getProductList(searchVO);
-		
+		HashMap<String, Object> map =  service.getProductList(searchVO);
+		System.out.println("3");
 		request.setAttribute("map", map);
 		request.setAttribute("searchVO", searchVO);			
-			
+		
+		session.setAttribute("vo", searchVO);
 
 		System.out.println("listProductAction 끝");
 	
