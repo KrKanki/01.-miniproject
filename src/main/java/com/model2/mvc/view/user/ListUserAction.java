@@ -19,9 +19,10 @@ public class ListUserAction extends Action {
 		SearchVO searchVO=new SearchVO();
 		
 		int page=1;
+		System.out.println("이프이전 실행");
 		if(request.getParameter("page") != null)
 			page=Integer.parseInt(request.getParameter("page"));
-		
+		System.out.println("이프직후 실행");
 		searchVO.setPage(page);
 		searchVO.setSearchCondition(request.getParameter("searchCondition"));
 		searchVO.setSearchKeyword(request.getParameter("searchKeyword"));
@@ -35,6 +36,9 @@ public class ListUserAction extends Action {
 		request.setAttribute("map", map);
 		request.setAttribute("searchVO", searchVO);
 		
+		
+		System.out.println("리턴이전실행");
 		return "forward:/user/listUser.jsp";
+		
 	}
 }

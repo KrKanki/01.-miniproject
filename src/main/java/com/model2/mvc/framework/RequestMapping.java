@@ -46,13 +46,16 @@ public class RequestMapping {
 		Action action = map.get(path);  //맵의 값 지정은 트라이문 아래에 map.put에서 지정.    1번째 리퀘스트후 생성된것 계속 재사용함!
 		System.out.println("GetAction메소드");
 		if(action == null){
+			System.out.println("if문실행");
 			
 			String className = properties.getProperty(path);
 			System.out.println("prop : " + properties);
 			System.out.println("path : " + path);			
-			System.out.println("className : " + className);
+			System.out.println("className : " + className+"\n");
+			System.out.println(className);
 			className = className.trim(); // .trim 스트링 타입인 문자의 공백을 제거
 			System.out.println("리퀘스트 맵핑 트라이문 시작");
+			System.out.println(className);
 			try{
 				System.out.println("try문 시작.");
 				Class c = Class.forName(className); // 위의 properties 에서 밸류 값으로 클래스네임을 얻어옴. 
