@@ -20,13 +20,13 @@ public class ProductServiceImpl implements ProductService {
 	public void addProduct(ProductVO productVO) throws Exception {
 		// TODO Auto-generated method stub
 		productDAO.insertProduct(productVO);
-
+ 
 	}
 
 	@Override
 	public ProductVO getProduct(int prodNo) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return productDAO.findProduct(prodNo);
 	}
 
 	@Override

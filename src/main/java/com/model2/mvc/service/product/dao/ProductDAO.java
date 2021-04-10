@@ -2,7 +2,7 @@ package com.model2.mvc.service.product.dao;
 //		com.model2.mvc.service.product.dao.ProductDAO
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
+import java.sql.ResultSet;
 
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.vo.ProductVO;
@@ -88,24 +88,41 @@ public class ProductDAO {
 		
 	}
 
-public void findProduct(ProductVO productVO) throws Exception {
+*/
+
+public ProductVO findProduct(int prodNo) throws Exception {
 	
+	System.out.println("findproduct ½ÇÇà");
 	Connection con = DBUtil.getConnection();
 	
-	String sql = 
+	String sql = "SELECT * FROM product WHERE prod_no IN (?) ";
 	
-	//PreparedStatement stmt = con.prepareStatement(sql);
-	//stmt.setString(1, productVO.getProdName());
-	//stmt.setString(2, productVO.getProdDetail());
-	//stmt.setString(3, productVO.getProdDetail());
-	//stmt.setInt(4, productVO.getPrice());
-	//stmt.setString(5, productVO.getFileName());
 	
-	//stmt.executeUpdate();
+	PreparedStatement stmt = con.prepareStatement(sql);
+	stmt.setInt(1, prodNo);
 	
-	//con.close();	
+	ResultSet rs = stmt.executeQuery();
+	
+	ProductVO productVO = null;
+	
+	while(rs.next()) {
+		productVO = new ProductVO();
+		productVO.setProdNo(rs.getInt("prodNo"));
+		productVO.setProdName(rs.getString("prodName"));
+		productVO.setFileName(rs.getString("fileName"));
+		productVO.setProdDetail(rs.getString("prodDetail"));
+		productVO.setManuDate(rs.getString("manuDate"));
+		productVO.setPrice(rs.getInt("Price"));
+		productVO.setRegDate(rs.getDate("regDate"));
+		
+		
+	}
+	
+	con.close();	
+	return productVO;
 }
 
+/*
 public void updateProduct(ProductVO productVO) throws Exception {
 	
 	Connection con = DBUtil.getConnection();
