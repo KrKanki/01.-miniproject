@@ -16,7 +16,7 @@ public class ListProductAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, 
 							HttpServletResponse response) throws Exception {
-		
+		System.out.println("listproductaction ½ÇÇà");
 		SearchVO searchVO = new SearchVO();
 		
 		int page= 1;

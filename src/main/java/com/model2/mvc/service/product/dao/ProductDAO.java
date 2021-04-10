@@ -2,8 +2,11 @@ package com.model2.mvc.service.product.dao;
 //		com.model2.mvc.service.product.dao.ProductDAO
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-
+import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.vo.ProductVO;
 
@@ -31,21 +34,25 @@ public class ProductDAO {
 		
 		con.close();	
 	}
-	/*
-	public  HashMap<String,Object> getProductList(SearchVO searchVO) throws Exception {
+	
+	public HashMap<String,Object> getProductList(SearchVO searchVO) throws Exception {
 		
+		System.out.println("productDAO getProductList ½ÇÇà");
 		Connection con = DBUtil.getConnection();
 		String sql = "SELECT * FROM PRODUCT" ;
  
 		if(searchVO.getSearchCondition() != null) {
 			if (searchVO.getSearchCondition().equals("0")) {
-				sql += " where USER_ID='" + searchVO.getSearchKeyword()
+				sql += " where prod_no='" + searchVO.getSearchKeyword()
 						+ "'";
 			} else if (searchVO.getSearchCondition().equals("1")) {
-				sql += " where USER_NAME='" + searchVO.getSearchKeyword()
+				sql += " where prod_name='" + searchVO.getSearchKeyword()
 						+ "'";
 			}
 		}
+		
+		sql += "ORDER BY prod_no";
+		
 		PreparedStatement stmt = 
 				con.prepareStatement(	sql,
 															ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -63,7 +70,7 @@ public class ProductDAO {
 		System.out.println("searchVO.getPage():" + searchVO.getPage());
 		System.out.println("searchVO.getPageUnit():" + searchVO.getPageUnit());	 
 
-		ArrayList<ProductVO> list = new ArrayList<ProductVO>();
+		ArrayList <ProductVO> list = new ArrayList<ProductVO>();
 		if (total > 0) {
 			for (int i = 0; i < searchVO.getPageUnit(); i++) {
 				ProductVO vo = new ProductVO();
@@ -71,6 +78,7 @@ public class ProductDAO {
 				vo.setProdName(rs.getString("prod_name"));
 				vo.setPrice(rs.getInt("price"));
 				vo.setRegDate(rs.getDate("reg_date"));
+				
 				
 
 				list.add(vo);
@@ -88,24 +96,22 @@ public class ProductDAO {
 		
 	}
 
+	
 public void findProduct(ProductVO productVO) throws Exception {
 	
 	Connection con = DBUtil.getConnection();
 	
-	String sql = 
+	String sql =  "SELECT * FROM product WHERE prod_no IN (?)"; 
 	
-	//PreparedStatement stmt = con.prepareStatement(sql);
-	//stmt.setString(1, productVO.getProdName());
-	//stmt.setString(2, productVO.getProdDetail());
-	//stmt.setString(3, productVO.getProdDetail());
-	//stmt.setInt(4, productVO.getPrice());
-	//stmt.setString(5, productVO.getFileName());
+	PreparedStatement stmt = con.prepareStatement(sql);
+	stmt.setInt(1, productVO.getProdNo());
 	
-	//stmt.executeUpdate();
 	
-	//con.close();	
+	stmt.executeQuery();
+	
+	con.close();	
 }
-
+/*
 public void updateProduct(ProductVO productVO) throws Exception {
 	
 	Connection con = DBUtil.getConnection();

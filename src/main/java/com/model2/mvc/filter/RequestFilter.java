@@ -19,6 +19,7 @@ public class RequestFilter implements Filter{
 																						throws IOException, ServletException {
 		arg0.setCharacterEncoding("euc-kr");
 		arg2.doFilter(arg0, arg1); 
+		System.out.println("리퀘스트필터 실행");
 		// 모든 URI 는 XML에 /* 맵핑으로 인해 여기 
 		//필터를 지나가게된다. 이필터의 기능은 문자를 EUC-KR로 인코딩해주는것. 
 	}
