@@ -185,7 +185,7 @@ function fncGetProductList(){
 		<td align="center"><%=no-- %></td>
 		<td></td>
 				
-				<td align="left"><a href="/getProduct.do?prodNo=<%=vo.getProdNo() %>&menu=manage"><%=vo.getProdName() %></a></td>
+				<td align="left"><a href="/getProduct.do?prodNo=<%=vo.getProdNo() %>&menu=manage"><%=vo.getProdNo() %></a></td>
 		
 		<td></td>
 		<td align="left"><%=vo.getPrice() %></td>

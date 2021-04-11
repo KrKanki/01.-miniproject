@@ -26,7 +26,7 @@ public class GetProductAction extends Action {
 		
 		request.setAttribute("vo", vo);
 
-		return "forward:/product/getProductjsp";
+		return "forward:/product/getProduct.jsp";
 		
 		
 		

@@ -120,6 +120,9 @@ public ProductVO findProduct(int prodNo) throws Exception {
 		productVO.setProdName(rs.getString("prod_name"));
 		productVO.setPrice(rs.getInt("price"));
 		productVO.setRegDate(rs.getDate("reg_date"));
+		productVO.setFileName(rs.getString("image_file"));
+		productVO.setProdDetail(rs.getString("prod_detail"));
+		productVO.setManuDate(rs.getString("manufacture_day"));
 		//productVO.setProTranCode(rs.getString("proTranCode"));
 		
 	}
